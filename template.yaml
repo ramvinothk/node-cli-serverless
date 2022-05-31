@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  node-docker-lambda
+
+  SAM Template for node-docker-lambda
+
+Resources:
+  CliInferenceFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      PackageType: Image
+      MemorySize: 1536
+      Timeout: 300
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/exe/cmd'
+            Method: post
+    Metadata:
+      DockerTag: nodeV16
+      DockerContext: .
+      Dockerfile: Dockerfile
+
+Outputs:
+  CliInferenceFunction:
+    Description: "CliInferenceFunction Lambda Function ARN"
+    Value: !GetAtt CliInferenceFunction.Arn
+  CliInferenceFunctionIamRole:
+    Description: "Implicit IAM Role created for CliInferenceFunction"
+    Value: !GetAtt CliInferenceFunction.Arn

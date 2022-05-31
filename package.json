@@ -1,0 +1,16 @@
+{
+  "name": "prusa-slicer-lambda",
+  "version": "0.0.1",
+  "scripts": {
+    "offline": "sls offline",
+    "build": "sam build",
+    "deploy": "sam deploy --guided --profil demo"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "lambda-multipart": "^1.0.2",
+    "parse-multipart": "^1.0.4",
+    "serverless": "^3.18.2",
+    "serverless-offline": "^8.8.0"
+  }
+}

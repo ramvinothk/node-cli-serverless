@@ -1,0 +1,45 @@
+service: prusa-slicer
+
+plugins:
+  - serverless-offline
+
+custom:
+  stage:
+    dev: dev
+    prd: prd
+  myStage: ${opt:stage, self:provider.stage}
+  environment:
+    STAGE:
+      dev: dev
+      prd: prd
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  stage: ${opt:stage,'dev'}
+  profile: demo
+  environment:
+    STAGE: ${self:custom.environment.STAGE.${self:custom.myStage}}
+#layers:
+#  layerOne:
+#    path: ../../../../Downloads/Archive2 # required, path to layer contents on disk
+#    name: ${self:custom.myStage}-layerName-1 # optional, Deployed Lambda layer name
+#    description: Description of what the lambda layer does # optional, Description to publish to AWS
+#    compatibleRuntimes: # optional, a list of runtimes this layer is compatible with
+#      - nodejs16.x
+#    compatibleArchitectures: # optional, a list of architectures this layer is compatible with
+#      - x86_64
+#    retain: false # optional, false by default. If true, layer versions are not deleted as new ones are created
+
+
+functions:
+  execCmd:
+    image: 109302317414.dkr.ecr.us-east-1.amazonaws.com/node-app:latest
+    handler: app/app.handler
+    events:
+      - http:
+          method: post
+          path: /exe/cmd
+
+
